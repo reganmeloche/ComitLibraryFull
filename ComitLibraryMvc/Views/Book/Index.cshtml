@@ -1,0 +1,30 @@
+@model List<ComitLibrary.Models.Book>
+
+<h2>List of Books</h2>
+<div>
+    <div>Number of books: @Model.Count</div>
+    <table class="table table-hover">
+        <!--Table headings (first row)-->
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Checked Out</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for (int i = 0; i < Model.Count; i++) {
+            <tr>
+                <td>@Model[i].Title</td>
+                <td>@Model[i].Author</td>
+                <td style="color:red">Yes</td>
+            </tr>
+        }
+        </tbody>
+        
+    </table>
+    <div>
+        <a asp-action="Form">New Book</a>
+    </div>
+
+</div>
