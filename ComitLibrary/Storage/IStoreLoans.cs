@@ -1,3 +1,4 @@
+using System;
 using ComitLibrary.Models;
 
 namespace ComitLibrary.Storage
@@ -6,6 +7,6 @@ namespace ComitLibrary.Storage
     {
         void Create(Loan newLoan);
 
-        Loan GetByPatronIdAndBookId(long patronId, long bookId);
+        Loan GetByPatronIdAndBookId(Guid patronId, Guid bookId);
     }
 }

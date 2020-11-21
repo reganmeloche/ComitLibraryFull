@@ -10,6 +10,7 @@
                 <th scope="col">Title</th>
                 <th scope="col">Author</th>
                 <th scope="col">Checked Out</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -17,7 +18,10 @@
             <tr>
                 <td>@Model[i].Title</td>
                 <td>@Model[i].Author</td>
-                <td style="color:red">Yes</td>
+                <td>@Model[i].IsCheckedOut</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@Model[i].Id">View Book</a>
+                </td>
             </tr>
         }
         </tbody>

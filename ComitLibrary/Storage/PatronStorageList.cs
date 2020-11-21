@@ -16,7 +16,7 @@ namespace ComitLibrary.Storage
             _patronList.Add(newPatron);
         }
         
-        public Patron GetById(long id) {
+        public Patron GetById(Guid id) {
             var patron = _patronList.Find(x => x.Id == id);
 
             if (patron == null) {

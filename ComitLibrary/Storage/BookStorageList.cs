@@ -17,8 +17,14 @@ namespace ComitLibrary.Storage
         public void Create(Book newBook) {
             _bookList.Add(newBook);
         }
+
+        public void Update(Book bookToUpdate) {
+            var book = GetById(bookToUpdate.Id);
+            book.Title = bookToUpdate.Title;
+            book.Author = bookToUpdate.Author;
+        }
         
-        public Book GetById(long id) {
+        public Book GetById(Guid id) {
             var book = _bookList.Find(x => x.Id == id);
 
             if (book == null) {

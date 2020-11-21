@@ -6,7 +6,7 @@ namespace ComitLibrary.Models
     {
         // NOTE: We've had to change all of the properties to be public, breaking encapsulation
         // We will address this later.
-        public long Id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public bool IsCheckedOut { get; set; }

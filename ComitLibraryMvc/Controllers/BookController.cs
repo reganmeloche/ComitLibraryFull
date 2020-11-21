@@ -19,6 +19,7 @@ namespace ComitLibraryMvc.Controllers
         public BookController(LibrarySystem library)
         {
             _library = library;
+
         }
 
         // GET Book/Index
@@ -28,16 +29,72 @@ namespace ComitLibraryMvc.Controllers
             return View(books);
         }
 
+        public IActionResult Details(Guid id) {
+            var book = _library.GetBook(id);
+
+            return View(book);
+        }
+
+        public IActionResult Edit(Guid id) {
+            // Get the book from the librarySystem
+            var book = _library.GetBook(id);
+
+            // build the view model
+            var bookViewModel = new BookViewModel() {
+                Author = book.Author,
+                Title = book.Title
+            };
+
+
+            // send the view model
+            ViewBag.IsEditing = true;
+            return View("Form", bookViewModel);
+        }
+
         public IActionResult Form() {
+            // var bookToCreate = new BookViewModel() {
+            //     Id = Guid.NewGuid()
+            // };
+            ViewBag.IsEditing = false;
             return View();
         }
         
         [HttpPost]
-        public IActionResult Create(Book newBook) {
-            _library.AddNewBook(newBook);
-            return RedirectToAction("Index");
+        public IActionResult Create(BookViewModel newBook) {
+
+            if (ModelState.IsValid) {
+                var bookToCreate = new Book() {
+                    Title = newBook.Title,
+                    Author = newBook.Author,
+                    IsCheckedOut = false,
+                    Id = Guid.NewGuid()
+                };
+                _library.AddNewBook(bookToCreate);
+
+                return RedirectToAction("Index");
+            } else {
+                return View("Form", newBook);
+            }
         }
 
+
+        [HttpPost]
+        public IActionResult Update(BookViewModel updatedBook) {
+            if (ModelState.IsValid) {
+                var book = new Book() {
+                    Title = updatedBook.Title,
+                    Author = updatedBook.Author,
+                    IsCheckedOut = false,
+                    Id = updatedBook.Id.Value
+                };
+                _library.UpdateBook(book);
+                return RedirectToAction("Index");
+            } else {
+                ViewBag.IsEditing = true;
+                return View("Form", updatedBook);
+            }
+
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -4,14 +4,14 @@ namespace ComitLibrary.Models
 {
     public class Patron
     {
-        public Patron(long id, string firstName, string lastName) {
+        public Patron(Guid id, string firstName, string lastName) {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
             JoinDate = DateTime.Now;
         }
 
-        public long Id { get; }
+        public Guid Id { get; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public DateTime JoinDate { get; private set; }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ComitLibrary.Models;
 
@@ -7,7 +8,7 @@ namespace ComitLibrary.Storage
     {
         void Create(Patron newPatron);
         
-        Patron GetById(long id);
+        Patron GetById(Guid id);
 
         List<Patron> GetAll();
     }

@@ -18,21 +18,21 @@ namespace ComitLibrary
 
             // Create 3 sample books
             var newBook1 = new Book() {
-                Id = 123,
+                Id = Guid.NewGuid(),
                 Title = "The Hobbit",
                 Author = "Tolkien",
                 IsCheckedOut = false
             };
 
             var newBook2 = new Book() {
-                Id = 999,
+                Id = Guid.NewGuid(),
                 Title = "Handmaids Tale",
                 Author = "Atwood",
                 IsCheckedOut = false
             };
 
             var newBook3 = new Book() {
-                Id = 76348,
+                Id = Guid.NewGuid(),
                 Title = "Slaughterhouse five",
                 Author = "Vonnegut",
                 IsCheckedOut = false
@@ -43,8 +43,10 @@ namespace ComitLibrary
             _bookStorage.Create(newBook3);
 
             // Create 2 sample patrons
-            _patronStorage.Create(new Patron(11118888, "Pablo", "Listingart"));
-            _patronStorage.Create(new Patron(22227777, "Jesselyn", "Popoff"));
+            var patron1 = new Patron(Guid.NewGuid(), "Pablo", "Listingart");
+            Console.WriteLine($"Patron ID: {patron1.Id}");
+            _patronStorage.Create(patron1);
+            _patronStorage.Create(new Patron(Guid.NewGuid(), "Jesselyn", "Popoff"));
         }
 
         /*** STORAGE ***/
@@ -62,6 +64,14 @@ namespace ComitLibrary
             return _bookStorage.GetAll();
         }
 
+        public Book GetBook(Guid id) {
+            return _bookStorage.GetById(id);
+        }
+
+        public void UpdateBook(Book bookToUpdate) {
+            _bookStorage.Update(bookToUpdate);
+        }
+
         public Book AddNewBook(Book newBook) {
             _bookStorage.Create(newBook);
             return newBook;
@@ -71,7 +81,7 @@ namespace ComitLibrary
             return _patronStorage.GetAll();
         }
 
-        public Loan CheckoutBook(long patronId, long bookId) {
+        public Loan CheckoutBook(Guid patronId, Guid bookId) {
             var patron = _patronStorage.GetById(patronId);
             patron.CheckOutBook();
 
@@ -83,7 +93,7 @@ namespace ComitLibrary
             return loan;
         }
 
-        public void ReturnBook(long patronId, long bookId) {
+        public void ReturnBook(Guid patronId, Guid bookId) {
             var patron = _patronStorage.GetById(patronId);
             patron.CheckInBook();
 

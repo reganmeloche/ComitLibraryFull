@@ -8,7 +8,9 @@ namespace ComitLibrary.Storage
     {
         void Create(Book newBook);
         
-        Book GetById(long id);
+        Book GetById(Guid id);
+
+        void Update(Book bookToUpdate);
 
         List<Book> GetByTitle(string title);
 
