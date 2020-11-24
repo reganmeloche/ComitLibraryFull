@@ -1,0 +1,56 @@
+@model SearchViewModel
+
+@{
+    var results = Model.SearchResults;
+}
+
+<div>
+    <h2>Search</h2>
+    <hr/>
+    <div>
+        <form asp-action="Search">
+            <div class="form-group">
+                <label asp-for="Title">Title</label>
+                <input type="text" class="form-control" asp-for="Title">
+                <span class="text-danger" asp-validation-for="Title"></span>
+            </div>
+            <button type="submit" class="btn btn-success">Search</button>
+        </form>
+    </div>
+    <br/>
+    <div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Checked Out</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+            @for (int i = 0; i < results.Count(); i++) {
+                var rowClass = "";
+                if (results[i].IsCheckedOut) {
+                    rowClass = "bg-warning"; 
+                }
+                <tr class="@rowClass">
+                    <td>@results[i].Title</td>
+                    <td>@results[i].Author</td>
+                    <td>@results[i].IsCheckedOut</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@results[i].Id">View Book</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+            
+        </table>
+    </div>
+    <br/>
+
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

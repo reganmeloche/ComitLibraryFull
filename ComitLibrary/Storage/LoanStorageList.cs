@@ -25,5 +25,15 @@ namespace ComitLibrary.Storage
 
             return loan;
         }
+
+        public Loan GetByBookId(Guid bookId) {
+            var loan = _loanList.Find(x => x.Book.Id == bookId);
+
+            if (loan == null) {
+                throw new Exception($"Loan does not exist for Book {bookId}");
+            }
+
+            return loan;
+        }
     }
 }

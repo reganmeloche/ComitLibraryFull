@@ -96,6 +96,21 @@ namespace ComitLibraryMvc.Controllers
 
         }
 
+
+        public IActionResult Search() {
+            var search = new SearchViewModel() {
+                Title = "",
+                SearchResults = new List<Book>()
+            };
+            return View(search);
+        }
+
+        [HttpPost]
+        public IActionResult Search(SearchViewModel search) {
+            search.SearchResults = _library.SearchForBook(search.Title);
+            return View(search);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

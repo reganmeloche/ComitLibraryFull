@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ComitLibraryMvc.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 using ComitLibrary;
 using ComitLibrary.Models;
@@ -22,8 +23,16 @@ namespace ComitLibraryMvc.Controllers
         }
 
         public IActionResult Create(Guid id) {
+            var patrons = _library.GetAllPatrons();
+            var patronList = patrons.Select(x => new {x.Id, x.FullName}).ToList();
+            var selectList = new SelectList(patronList, "Id","FullName");
+            
+            var book = _library.GetBook(id);
+
             var loanViewModel = new LoanViewModel() {
                 BookId = id,
+                PatronList = selectList,
+                Title = $"{book.Title} ({book.Author})"
             };
             return View(loanViewModel);
         }
@@ -36,7 +45,11 @@ namespace ComitLibraryMvc.Controllers
             } else {
                 return View(newLoan);
             }
-            
+        }
+
+        public IActionResult Return(Guid id) { 
+            _library.ReturnBook(id);
+            return RedirectToAction("Details", "Book", new { id });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

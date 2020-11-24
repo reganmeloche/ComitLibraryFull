@@ -2,15 +2,16 @@
 
 <div>
     <form asp-action="Create">
-        @* <input type="hidden" asp-for="BookId"/> *@
+        <input type="hidden" asp-for="BookId"/>
         <div class="form-group">
-            <label asp-for="BookId">Book Id</label>
-            <input type="text" class="form-control" asp-for="BookId">
-            <span class="text-danger" asp-validation-for="BookId"></span>
+            <label asp-for="BookId">Book</label>
+            <input type="text" class="form-control" asp-for="Title" disabled/>
         </div>
         <div class="form-group">
-            <label asp-for="PatronId">Patron Id</label>
-            <input type="text" class="form-control" asp-for="PatronId">
+            <label asp-for="PatronId">Patron</label>
+            <select asp-for="PatronId" asp-items="@Model.PatronList" class="form-control">
+            </select>
+            @* <input type="text" class="form-control" asp-for="PatronId"> *@
             <span class="text-danger" asp-validation-for="PatronId"></span>
         </div>
 

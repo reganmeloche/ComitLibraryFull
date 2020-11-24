@@ -8,5 +8,7 @@ namespace ComitLibrary.Storage
         void Create(Loan newLoan);
 
         Loan GetByPatronIdAndBookId(Guid patronId, Guid bookId);
+
+        Loan GetByBookId(Guid BookId);
     }
 }

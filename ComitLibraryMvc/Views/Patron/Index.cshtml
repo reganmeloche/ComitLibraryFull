@@ -1,0 +1,30 @@
+@model List<ComitLibrary.Models.Patron>
+
+<h2>List of Patrons</h2>
+<div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Last Name</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Join Date</th>
+                <th scope="col">Books out</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for (int i = 0; i < Model.Count; i++) {
+            <tr>
+                <td>@Model[i].LastName</td>
+                <td>@Model[i].FirstName</td>
+                <td>@Model[i].JoinDate</td>
+                <td>@Model[i].BooksOut</td>
+            </tr>
+        }
+        </tbody>
+        
+    </table>
+    <div>
+        <a asp-action="Create">New Patron</a>
+    </div>
+
+</div>

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using F23.StringSimilarity;
 
 using ComitLibrary.Storage;
 using ComitLibrary.Models;
@@ -57,7 +59,19 @@ namespace ComitLibrary
 
         /*** METHODS ***/
         public List<Book> SearchForBook(string titleToSearch) {
-            return _bookStorage.GetByTitle(titleToSearch);
+            List<Book> resultSet = new List<Book>();
+            var l = new Levenshtein();
+            string lowerCaseSearch = titleToSearch.ToLower();
+            var books = _bookStorage.GetAll();
+
+            foreach (var book in books) {
+                var lowerCaseTitle = book.Title.ToLower();
+                if (l.Distance(lowerCaseSearch, lowerCaseTitle) < 5) {
+                    resultSet.Add(book);
+                }
+            }
+
+            return resultSet;
         }
 
         public List<Book> GetAllBooks() {
@@ -81,6 +95,10 @@ namespace ComitLibrary
             return _patronStorage.GetAll();
         }
 
+        public void AddPatron(Patron newPatron) {
+            _patronStorage.Create(newPatron);
+        }
+
         public Loan CheckoutBook(Guid patronId, Guid bookId) {
             var patron = _patronStorage.GetById(patronId);
             patron.CheckOutBook();
@@ -93,15 +111,18 @@ namespace ComitLibrary
             return loan;
         }
 
-        public void ReturnBook(Guid patronId, Guid bookId) {
-            var patron = _patronStorage.GetById(patronId);
-            patron.CheckInBook();
-
+        public void ReturnBook(Guid bookId) {
             var book = _bookStorage.GetById(bookId);
             book.CheckIn();
 
-            var loan = _loanStorage.GetByPatronIdAndBookId(patronId, bookId);
+            var loan = _loanStorage.GetByBookId(bookId);
+            
+            var patron = _patronStorage.GetById(loan.Patron.Id);
+            patron.CheckInBook();
+
             loan.IsReturned = true;
         }
+
+        
     }
 }
