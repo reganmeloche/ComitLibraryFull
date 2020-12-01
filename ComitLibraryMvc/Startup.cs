@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 using ComitLibrary;
 using ComitLibrary.Storage;
@@ -30,14 +31,17 @@ namespace ComitLibraryMvc
             services.AddControllersWithViews();
 
             // Dependency Injection
-            var bookStorage = new BookStorageList();
-            var patronStorage = new PatronStorageList();
-            var loanStorage = new LoanStorageList();
+            // var bookStorage = new BookStorageList();
+            // var patronStorage = new PatronStorageList();
+            // var loanStorage = new LoanStorageList();
 
-            var library = new LibrarySystem(bookStorage, patronStorage, loanStorage);
-
-            services.AddSingleton<LibrarySystem>(library);
-
+            string connectionString = "Host=suleiman.db.elephantsql.com;Port=5432;Database=okmpimxz;Username=okmpimxz;Password=[REDACTED];";
+            services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connectionString, b => b.MigrationsAssembly("ComitLibraryMvc")));
+            
+            services.AddScoped<IStoreBooks, BookStorageEF>();
+            services.AddScoped<IStoreLoans, LoanStorageEF>();
+            services.AddScoped<IStorePatrons, PatronStorageEF>();
+            services.AddScoped<LibrarySystem>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

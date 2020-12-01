@@ -19,36 +19,36 @@ namespace ComitLibrary
             _loanStorage = loanStorage;
 
             // Create 3 sample books
-            var newBook1 = new Book() {
-                Id = Guid.NewGuid(),
-                Title = "The Hobbit",
-                Author = "Tolkien",
-                IsCheckedOut = false
-            };
+            // var newBook1 = new Book() {
+            //     Id = Guid.NewGuid(),
+            //     Title = "The Hobbit",
+            //     Author = "Tolkien",
+            //     IsCheckedOut = false
+            // };
 
-            var newBook2 = new Book() {
-                Id = Guid.NewGuid(),
-                Title = "Handmaids Tale",
-                Author = "Atwood",
-                IsCheckedOut = false
-            };
+            // var newBook2 = new Book() {
+            //     Id = Guid.NewGuid(),
+            //     Title = "Handmaids Tale",
+            //     Author = "Atwood",
+            //     IsCheckedOut = false
+            // };
 
-            var newBook3 = new Book() {
-                Id = Guid.NewGuid(),
-                Title = "Slaughterhouse five",
-                Author = "Vonnegut",
-                IsCheckedOut = false
-            };
+            // var newBook3 = new Book() {
+            //     Id = Guid.NewGuid(),
+            //     Title = "Slaughterhouse five",
+            //     Author = "Vonnegut",
+            //     IsCheckedOut = false
+            // };
 
-            _bookStorage.Create(newBook1);
-            _bookStorage.Create(newBook2);
-            _bookStorage.Create(newBook3);
+            // _bookStorage.Create(newBook1);
+            // _bookStorage.Create(newBook2);
+            // _bookStorage.Create(newBook3);
 
-            // Create 2 sample patrons
-            var patron1 = new Patron(Guid.NewGuid(), "Pablo", "Listingart");
-            Console.WriteLine($"Patron ID: {patron1.Id}");
-            _patronStorage.Create(patron1);
-            _patronStorage.Create(new Patron(Guid.NewGuid(), "Jesselyn", "Popoff"));
+            // // Create 2 sample patrons
+            // var patron1 = new Patron(Guid.NewGuid(), "Pablo", "Listingart");
+            // Console.WriteLine($"Patron ID: {patron1.Id}");
+            // _patronStorage.Create(patron1);
+            // _patronStorage.Create(new Patron(Guid.NewGuid(), "Jesselyn", "Popoff"));
         }
 
         /*** STORAGE ***/
