@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 using ComitLibrary.Models;
 
@@ -15,34 +16,33 @@ namespace ComitLibrary.Storage
         }
 
         public void Create(Book newBook) {
-            var bookModel = new EFModels.Book() {
-                BookId = newBook.Id,
-                Author = newBook.Author,
-                Title = newBook.Title,
-                IsCheckedOut = newBook.IsCheckedOut,
-            };
+            var bookModel = ConvertToDb(newBook);
             _context.Books.Add(bookModel);
             _context.SaveChanges();
         }
 
         public void Update(Book bookToUpdate) {
-            
+            var bookDb = ConvertToDb(bookToUpdate);
+            _context.Books.Update(bookDb);
+            _context.SaveChanges();
         }
         
         public Book GetById(Guid id) {
-            var bookFromDb = _context.Books.First(x => x.BookId == id);
+            var bookFromDb = _context.Books
+                .AsNoTracking()
+                .Where(x => x.IsDeleted == false)
+                .First(x => x.BookId == id);
             var book = ConvertFromDb(bookFromDb);
             return book;
-        }
-
-        public List<Book> GetByTitle(string title) {
-            return new List<Book>();
         }
 
         public List<Book> GetAll() {
             List<Book> results = new List<Book>();
 
-            var booksFromDb = _context.Books.ToList();
+            var booksFromDb = _context.Books
+                .AsNoTracking()
+                .Where(x => x.IsDeleted == false)
+                .ToList();
 
             foreach (var bookFromDb in booksFromDb) {
                 var nextBook = ConvertFromDb(bookFromDb);
@@ -52,12 +52,30 @@ namespace ComitLibrary.Storage
             return results;
         }
 
-        private static Book ConvertFromDb(EFModels.Book bookFromDb) {
+        public void Delete(Guid id) {
+            var bookFromDb = _context.Books
+                .AsNoTracking()
+                .First(x => x.BookId == id);
+            bookFromDb.IsDeleted = true;
+            _context.Books.Update(bookFromDb);
+            _context.SaveChanges();
+        }
+
+        public static Book ConvertFromDb(EFModels.Book bookFromDb) {
             return new Book() {
                 Id = bookFromDb.BookId,
                 Author = bookFromDb.Author,
                 Title = bookFromDb.Title,
                 IsCheckedOut = bookFromDb.IsCheckedOut,
+            };
+        }
+
+        public static EFModels.Book ConvertToDb(Book book) {
+            return new EFModels.Book() {
+                BookId = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                IsCheckedOut = book.IsCheckedOut,
             };
         }
     }

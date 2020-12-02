@@ -15,6 +15,10 @@ namespace ComitLibrary.Storage
         public void Create(Patron newPatron) {
             _patronList.Add(newPatron);
         }
+
+        public void Update(Patron updatedPatron) {
+            // todo
+        }
         
         public Patron GetById(Guid id) {
             var patron = _patronList.Find(x => x.Id == id);

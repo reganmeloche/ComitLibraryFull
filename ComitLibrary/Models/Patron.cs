@@ -11,6 +11,14 @@ namespace ComitLibrary.Models
             JoinDate = DateTime.Now;
         }
 
+        public Patron(Guid id, string firstName, string lastName, DateTime joinDate, int booksOut) {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+            JoinDate = joinDate;
+            BooksOut = booksOut;
+        }
+
         public Guid Id { get; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }

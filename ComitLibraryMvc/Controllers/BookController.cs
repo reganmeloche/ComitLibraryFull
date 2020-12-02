@@ -96,6 +96,12 @@ namespace ComitLibraryMvc.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult Delete(Guid id) {
+            _library.DeleteBookById(id);
+            return RedirectToAction("Index");
+        }
+
 
         public IActionResult Search() {
             var search = new SearchViewModel() {

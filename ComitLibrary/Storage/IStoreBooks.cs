@@ -12,8 +12,8 @@ namespace ComitLibrary.Storage
 
         void Update(Book bookToUpdate);
 
-        List<Book> GetByTitle(string title);
-
         List<Book> GetAll();
+
+        void Delete(Guid id);
     }
 }

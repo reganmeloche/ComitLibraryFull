@@ -16,6 +16,9 @@ namespace ComitLibrary.Storage
             _loanList.Add(newLoan);
         }
 
+        public void Update(Loan updatedLoan) {
+            //todo
+        }
         public Loan GetByPatronIdAndBookId(Guid patronId, Guid bookId) {
             var loan = _loanList.Find(x => x.Patron.Id == patronId && x.Book.Id == bookId);
 

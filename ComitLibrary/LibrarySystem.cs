@@ -102,9 +102,11 @@ namespace ComitLibrary
         public Loan CheckoutBook(Guid patronId, Guid bookId) {
             var patron = _patronStorage.GetById(patronId);
             patron.CheckOutBook();
+            _patronStorage.Update(patron);
 
             var book = _bookStorage.GetById(bookId);
             book.CheckOut();
+            _bookStorage.Update(book);
 
             var loan = new Loan(patron, book);
             _loanStorage.Create(loan);
@@ -114,15 +116,20 @@ namespace ComitLibrary
         public void ReturnBook(Guid bookId) {
             var book = _bookStorage.GetById(bookId);
             book.CheckIn();
+            _bookStorage.Update(book);
 
             var loan = _loanStorage.GetByBookId(bookId);
             
             var patron = _patronStorage.GetById(loan.Patron.Id);
             patron.CheckInBook();
+            _patronStorage.Update(patron);
 
             loan.IsReturned = true;
+            _loanStorage.Update(loan);
         }
 
-        
+        public void DeleteBookById(Guid id) {
+            _bookStorage.Delete(id);
+        }
     }
 }

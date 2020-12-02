@@ -34,12 +34,12 @@ namespace ComitLibrary.Storage
             return book;
         }
 
-        public List<Book> GetByTitle(string title) {
-            return _bookList.Where(x => x.Title.ToLower() == title.ToLower()).ToList();
-        }
-
         public List<Book> GetAll() {
             return _bookList;
+        }
+
+        public void Delete(Guid id) {
+            //todo
         }
     }
 }
