@@ -67,6 +67,7 @@ namespace ComitLibrary.Storage
                 Author = bookFromDb.Author,
                 Title = bookFromDb.Title,
                 IsCheckedOut = bookFromDb.IsCheckedOut,
+                Year = bookFromDb.Year,
             };
         }
 
@@ -76,6 +77,7 @@ namespace ComitLibrary.Storage
                 Title = book.Title,
                 Author = book.Author,
                 IsCheckedOut = book.IsCheckedOut,
+                Year = book.Year
             };
         }
     }

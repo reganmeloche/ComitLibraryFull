@@ -1,0 +1,30 @@
+@model List<ComitLibrary.Models.Loan>
+
+<h2>Active Loans</h2>
+<div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Patron</th>
+                <th scope="col">Book</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        @for (int i = 0; i < Model.Count; i++) {
+            <tr>
+                <td>@Model[i].Patron.FullName</td>
+                <td>@Model[i].Book.Title</td>
+                <td>
+                    <a class="btn btn-warning" asp-controller="Loan" asp-action="Return" asp-route-id="@Model[i].Book.Id">Return</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+        
+    </table>
+    <div>
+        @* <a asp-action="Form">New Book</a> *@
+    </div>
+
+</div>

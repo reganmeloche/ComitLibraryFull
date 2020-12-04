@@ -11,35 +11,27 @@
         <dt class="col-sm-3">Is Checked Out</dt>
         <dd class="col-sm-9">@Model.IsCheckedOut</dd>
 
-        <dt class="col-sm-3">Genre</dt>
-        <dd class="col-sm-9">Drama</dd>
-
         <dt class="col-sm-3">Year</dt>
-        <dd class="col-sm-9">0000</dd>
+        <dd class="col-sm-9">@Model.Year</dd>
 
     </dl>
 
-    @if (!Model.IsCheckedOut) {
-        <div>
-            <a class="btn btn-success" asp-controller="Loan" asp-action="Create" asp-route-id="@Model.Id">Checkout</a>
-        </div>
-        <br/>
-    } else {
-        <div>
-            <a class="btn btn-warning" asp-controller="Loan" asp-action="Return" asp-route-id="@Model.Id">Return</a>
-        </div>
-        <br/>
-    }
-
     <div>
-        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit Book</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit Book</a>
     </div>
+    <br/>
 
     <div>
-        <form asp-action="Delete">
+    @if (!Model.IsCheckedOut) {
+        <a class="btn btn-success" asp-controller="Loan" asp-action="Create" asp-route-id="@Model.Id">Checkout</a>
+        <form asp-action="Delete" style="display:inline">
             <input type="hidden" asp-for="Id"/>
             <button class="btn btn-danger" type="submit">Delete</button>
         </form>
+    
+    } else {
+        <a class="btn btn-warning" asp-controller="Loan" asp-action="Return" asp-route-id="@Model.Id">Return</a>
+    }
     </div>
 
     <hr/>

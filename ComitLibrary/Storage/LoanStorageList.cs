@@ -38,5 +38,9 @@ namespace ComitLibrary.Storage
 
             return loan;
         }
+
+        public List<Loan> GetAll(){
+            return new List<Loan>();
+        }
     }
 }

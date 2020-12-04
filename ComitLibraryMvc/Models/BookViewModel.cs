@@ -14,5 +14,9 @@ namespace ComitLibraryMvc.Models
         [Required]
         [StringLength(30)]
         public string Author { get; set; }
+
+        [Required]
+        [Range(1000, 2300)]
+        public int Year { get; set; }
     }
 }

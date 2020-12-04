@@ -42,7 +42,8 @@ namespace ComitLibraryMvc.Controllers
             // build the view model
             var bookViewModel = new BookViewModel() {
                 Author = book.Author,
-                Title = book.Title
+                Title = book.Title,
+                Year = book.Year,
             };
 
 
@@ -52,9 +53,6 @@ namespace ComitLibraryMvc.Controllers
         }
 
         public IActionResult Form() {
-            // var bookToCreate = new BookViewModel() {
-            //     Id = Guid.NewGuid()
-            // };
             ViewBag.IsEditing = false;
             return View();
         }
@@ -67,7 +65,8 @@ namespace ComitLibraryMvc.Controllers
                     Title = newBook.Title,
                     Author = newBook.Author,
                     IsCheckedOut = false,
-                    Id = Guid.NewGuid()
+                    Id = Guid.NewGuid(),
+                    Year = newBook.Year
                 };
                 _library.AddNewBook(bookToCreate);
 
@@ -81,11 +80,13 @@ namespace ComitLibraryMvc.Controllers
         [HttpPost]
         public IActionResult Update(BookViewModel updatedBook) {
             if (ModelState.IsValid) {
+                var existingBook = _library.GetBook(updatedBook.Id.Value);
                 var book = new Book() {
                     Title = updatedBook.Title,
                     Author = updatedBook.Author,
-                    IsCheckedOut = false,
-                    Id = updatedBook.Id.Value
+                    IsCheckedOut = existingBook.IsCheckedOut,
+                    Id = updatedBook.Id.Value,
+                    Year = updatedBook.Year,
                 };
                 _library.UpdateBook(book);
                 return RedirectToAction("Index");

@@ -22,6 +22,11 @@ namespace ComitLibraryMvc.Controllers
             _library = library;
         }
 
+        public IActionResult Index() {
+            var loans = _library.GetAllActiveLoans();
+            return View(loans);
+        }
+
         public IActionResult Create(Guid id) {
             var patrons = _library.GetAllPatrons();
             var patronList = patrons.Select(x => new {x.Id, x.FullName}).ToList();

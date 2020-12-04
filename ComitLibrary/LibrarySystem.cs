@@ -131,5 +131,15 @@ namespace ComitLibrary
         public void DeleteBookById(Guid id) {
             _bookStorage.Delete(id);
         }
+
+        public List<Loan> GetAllActiveLoans() {
+            var allLoans = _loanStorage.GetAll();
+
+            var activeLoans = allLoans
+                .Where(x => x.IsReturned == false)
+                .ToList();
+            
+            return activeLoans;
+        }
     }
 }

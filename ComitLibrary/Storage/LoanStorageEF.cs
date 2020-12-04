@@ -32,10 +32,19 @@ namespace ComitLibrary.Storage
                 .AsNoTracking()
                 .Include(x => x.Patron)
                 .Include(x => x.Book)
-                .First(x => x.BookId == bookId);
+                .First(x => x.BookId == bookId && x.IsReturned == false);
             
             var loan = ConvertFromDb(loanDb);
             return loan;
+        }
+
+        public List<Loan> GetAll() {
+            return _context.Loans
+                .AsNoTracking()
+                .Include(x => x.Patron)
+                .Include(x => x.Book)
+                .Select(x => ConvertFromDb(x))
+                .ToList();
         }
 
         private static EFModels.Loan ConvertToDb(Loan loan) {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using ComitLibrary.Models;
 
 namespace ComitLibrary.Storage
@@ -10,5 +11,7 @@ namespace ComitLibrary.Storage
         void Update(Loan updatedLoan);
 
         Loan GetByBookId(Guid BookId);
+
+        List<Loan> GetAll();
     }
 }
