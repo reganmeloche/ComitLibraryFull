@@ -26,18 +26,19 @@ namespace ComitLibrary.Storage
             _context.SaveChanges();
         }
         
-        public Patron GetById(Guid id) {
+        public Patron GetById(Guid id, Guid userId) {
             var patronDb = _context.Patrons
                 .AsNoTracking()
-                .First(x => x.PatronId == id);
+                .First(x => x.PatronId == id && x.UserId == userId);
             
             var patron = ConvertFromDb(patronDb);
             return patron;
         }
 
-        public List<Patron> GetAll() {
+        public List<Patron> GetAll(Guid userId) {
             return _context.Patrons
                 .AsNoTracking()
+                .Where(x => x.UserId == userId)
                 .Select(x => ConvertFromDb(x))
                 .ToList();
         }
@@ -48,7 +49,8 @@ namespace ComitLibrary.Storage
                 patronDb.FirstName,
                 patronDb.LastName,
                 patronDb.JoinDate,
-                patronDb.BooksOut
+                patronDb.BooksOut,
+                patronDb.UserId
             );
         }
 
@@ -59,6 +61,7 @@ namespace ComitLibrary.Storage
                 LastName = patron.LastName,
                 JoinDate = patron.JoinDate,
                 BooksOut = patron.BooksOut,
+                UserId = patron.UserId,
             };
         }
     }

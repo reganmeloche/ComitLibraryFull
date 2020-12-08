@@ -10,8 +10,8 @@ namespace ComitLibrary.Storage
         
         void Update(Patron updatedPatron);
 
-        Patron GetById(Guid id);
+        Patron GetById(Guid id, Guid userId);
 
-        List<Patron> GetAll();
+        List<Patron> GetAll(Guid userId);
     }
 }

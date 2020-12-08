@@ -13,42 +13,9 @@ namespace ComitLibrary
     {
         /*** CONSTRUCTOR ***/
         public LibrarySystem(IStoreBooks bookStorage, IStorePatrons patronStorage, IStoreLoans loanStorage) {
-            // Init storage using Dependency Injection
             _bookStorage = bookStorage;
             _patronStorage = patronStorage;
             _loanStorage = loanStorage;
-
-            // Create 3 sample books
-            // var newBook1 = new Book() {
-            //     Id = Guid.NewGuid(),
-            //     Title = "The Hobbit",
-            //     Author = "Tolkien",
-            //     IsCheckedOut = false
-            // };
-
-            // var newBook2 = new Book() {
-            //     Id = Guid.NewGuid(),
-            //     Title = "Handmaids Tale",
-            //     Author = "Atwood",
-            //     IsCheckedOut = false
-            // };
-
-            // var newBook3 = new Book() {
-            //     Id = Guid.NewGuid(),
-            //     Title = "Slaughterhouse five",
-            //     Author = "Vonnegut",
-            //     IsCheckedOut = false
-            // };
-
-            // _bookStorage.Create(newBook1);
-            // _bookStorage.Create(newBook2);
-            // _bookStorage.Create(newBook3);
-
-            // // Create 2 sample patrons
-            // var patron1 = new Patron(Guid.NewGuid(), "Pablo", "Listingart");
-            // Console.WriteLine($"Patron ID: {patron1.Id}");
-            // _patronStorage.Create(patron1);
-            // _patronStorage.Create(new Patron(Guid.NewGuid(), "Jesselyn", "Popoff"));
         }
 
         /*** STORAGE ***/
@@ -58,11 +25,11 @@ namespace ComitLibrary
         
 
         /*** METHODS ***/
-        public List<Book> SearchForBook(string titleToSearch) {
+        public List<Book> SearchForBook(string titleToSearch, Guid userId) {
             List<Book> resultSet = new List<Book>();
             var l = new Levenshtein();
             string lowerCaseSearch = titleToSearch.ToLower();
-            var books = _bookStorage.GetAll();
+            var books = _bookStorage.GetAll(userId);
 
             foreach (var book in books) {
                 var lowerCaseTitle = book.Title.ToLower();
@@ -74,12 +41,12 @@ namespace ComitLibrary
             return resultSet;
         }
 
-        public List<Book> GetAllBooks() {
-            return _bookStorage.GetAll();
+        public List<Book> GetAllBooks(Guid userId) {
+            return _bookStorage.GetAll(userId);
         }
 
-        public Book GetBook(Guid id) {
-            return _bookStorage.GetById(id);
+        public Book GetBook(Guid id, Guid userId) {
+            return _bookStorage.GetById(id, userId);
         }
 
         public void UpdateBook(Book bookToUpdate) {
@@ -91,36 +58,36 @@ namespace ComitLibrary
             return newBook;
         }
 
-        public List<Patron> GetAllPatrons() {
-            return _patronStorage.GetAll();
+        public List<Patron> GetAllPatrons(Guid userId) {
+            return _patronStorage.GetAll(userId);
         }
 
         public void AddPatron(Patron newPatron) {
             _patronStorage.Create(newPatron);
         }
 
-        public Loan CheckoutBook(Guid patronId, Guid bookId) {
-            var patron = _patronStorage.GetById(patronId);
+        public Loan CheckoutBook(Guid patronId, Guid bookId, Guid userId) {
+            var patron = _patronStorage.GetById(patronId, userId);
             patron.CheckOutBook();
             _patronStorage.Update(patron);
 
-            var book = _bookStorage.GetById(bookId);
+            var book = _bookStorage.GetById(bookId, userId);
             book.CheckOut();
             _bookStorage.Update(book);
 
-            var loan = new Loan(patron, book);
+            var loan = new Loan(patron, book, userId);
             _loanStorage.Create(loan);
             return loan;
         }
 
-        public void ReturnBook(Guid bookId) {
-            var book = _bookStorage.GetById(bookId);
+        public void ReturnBook(Guid bookId, Guid userId) {
+            var book = _bookStorage.GetById(bookId, userId);
             book.CheckIn();
             _bookStorage.Update(book);
 
-            var loan = _loanStorage.GetByBookId(bookId);
+            var loan = _loanStorage.GetByBookId(bookId, userId);
             
-            var patron = _patronStorage.GetById(loan.Patron.Id);
+            var patron = _patronStorage.GetById(loan.Patron.Id, userId);
             patron.CheckInBook();
             _patronStorage.Update(patron);
 
@@ -128,12 +95,12 @@ namespace ComitLibrary
             _loanStorage.Update(loan);
         }
 
-        public void DeleteBookById(Guid id) {
-            _bookStorage.Delete(id);
+        public void DeleteBookById(Guid id, Guid userId) {
+            _bookStorage.Delete(id, userId);
         }
 
-        public List<Loan> GetAllActiveLoans() {
-            var allLoans = _loanStorage.GetAll();
+        public List<Loan> GetAllActiveLoans(Guid userId) {
+            var allLoans = _loanStorage.GetAll(userId);
 
             var activeLoans = allLoans
                 .Where(x => x.IsReturned == false)

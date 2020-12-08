@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 
+using Microsoft.AspNetCore.Identity;
+
 using ComitLibrary;
 using ComitLibrary.Storage;
 using ComitLibrary.Models;
@@ -29,15 +31,14 @@ namespace ComitLibraryMvc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
-            // Dependency Injection
-            // var bookStorage = new BookStorageList();
-            // var patronStorage = new PatronStorageList();
-            // var loanStorage = new LoanStorageList();
+            services.AddRazorPages();
 
             string connectionString = Configuration.GetConnectionString("DefaultDB");
             services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connectionString, b => b.MigrationsAssembly("ComitLibraryMvc")));
             
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationContext>();
+
             services.AddScoped<IStoreBooks, BookStorageEF>();
             services.AddScoped<IStoreLoans, LoanStorageEF>();
             services.AddScoped<IStorePatrons, PatronStorageEF>();
@@ -68,6 +69,7 @@ namespace ComitLibraryMvc
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -75,6 +77,7 @@ namespace ComitLibraryMvc
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Book}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

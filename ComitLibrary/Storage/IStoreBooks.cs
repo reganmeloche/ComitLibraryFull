@@ -8,12 +8,12 @@ namespace ComitLibrary.Storage
     {
         void Create(Book newBook);
         
-        Book GetById(Guid id);
+        Book GetById(Guid id, Guid userId);
 
         void Update(Book bookToUpdate);
 
-        List<Book> GetAll();
+        List<Book> GetAll(Guid userId);
 
-        void Delete(Guid id);
+        void Delete(Guid id, Guid userId);
     }
 }

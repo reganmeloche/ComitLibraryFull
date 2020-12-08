@@ -10,5 +10,6 @@ namespace ComitLibrary.Storage.EFModels
         public Book Book { get; set; }
         public Guid BookId { get; set; }
         public bool IsReturned { get; set; }
+        public Guid UserId { get; set; }
     }
 }

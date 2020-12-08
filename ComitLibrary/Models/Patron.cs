@@ -4,19 +4,21 @@ namespace ComitLibrary.Models
 {
     public class Patron
     {
-        public Patron(Guid id, string firstName, string lastName) {
+        public Patron(Guid id, string firstName, string lastName, Guid userId) {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
             JoinDate = DateTime.Now;
+            UserId = userId;
         }
 
-        public Patron(Guid id, string firstName, string lastName, DateTime joinDate, int booksOut) {
+        public Patron(Guid id, string firstName, string lastName, DateTime joinDate, int booksOut, Guid userId) {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
             JoinDate = joinDate;
             BooksOut = booksOut;
+            UserId = userId;
         }
 
         public Guid Id { get; }
@@ -24,6 +26,7 @@ namespace ComitLibrary.Models
         public string LastName { get; private set; }
         public DateTime JoinDate { get; private set; }
         public int BooksOut { get; private set; }
+        public Guid UserId { get; set; }
         private static readonly int MAX_BOOKS_ALLOWED = 5;
 
         public string FullName { 
