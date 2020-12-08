@@ -9,5 +9,6 @@ namespace ComitLibrary.Storage.EFModels
         public string LastName { get; set; }
         public DateTime JoinDate { get; set; }
         public int BooksOut { get; set; }
+        public Guid UserId { get; set; }
     }
 }

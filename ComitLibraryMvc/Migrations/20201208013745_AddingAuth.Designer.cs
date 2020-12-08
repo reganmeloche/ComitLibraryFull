@@ -3,15 +3,17 @@ using System;
 using ComitLibrary.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ComitLibraryMvc.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20201208013745_AddingAuth")]
+    partial class AddingAuth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,9 +39,6 @@ namespace ComitLibraryMvc.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("Year")
                         .HasColumnType("integer");
 
@@ -61,9 +60,6 @@ namespace ComitLibraryMvc.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<Guid>("PatronId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("LoanId");
@@ -92,9 +88,6 @@ namespace ComitLibraryMvc.Migrations
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
 
                     b.HasKey("PatronId");
 

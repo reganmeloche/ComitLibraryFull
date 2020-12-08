@@ -10,8 +10,8 @@ namespace ComitLibrary.Storage
 
         void Update(Loan updatedLoan);
 
-        Loan GetByBookId(Guid BookId);
+        Loan GetByBookId(Guid BookId, Guid userId);
 
-        List<Loan> GetAll();
+        List<Loan> GetAll(Guid userId);
     }
 }

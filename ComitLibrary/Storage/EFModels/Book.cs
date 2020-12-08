@@ -10,5 +10,6 @@ namespace ComitLibrary.Storage.EFModels
         public bool IsCheckedOut { get; set; }
         public bool IsDeleted { get; set; }
         public int Year { get; set; }
+        public Guid UserId { get; set; }
     }
 }

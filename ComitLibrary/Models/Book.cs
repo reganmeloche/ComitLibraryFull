@@ -9,6 +9,7 @@ namespace ComitLibrary.Models
         public string Author { get; set; }
         public bool IsCheckedOut { get; set; }
         public int Year { get; set; }
+        public Guid UserId { get; set; }
 
         public void CheckOut() {
             if (!IsCheckedOut) {

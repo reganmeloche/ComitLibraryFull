@@ -27,21 +27,21 @@ namespace ComitLibrary.Storage
             _context.SaveChanges();
         }
         
-        public Book GetById(Guid id) {
+        public Book GetById(Guid id, Guid userId) {
             var bookFromDb = _context.Books
                 .AsNoTracking()
-                .Where(x => x.IsDeleted == false)
+                .Where(x => x.IsDeleted == false && x.UserId == userId)
                 .First(x => x.BookId == id);
             var book = ConvertFromDb(bookFromDb);
             return book;
         }
 
-        public List<Book> GetAll() {
+        public List<Book> GetAll(Guid userId) {
             List<Book> results = new List<Book>();
 
             var booksFromDb = _context.Books
                 .AsNoTracking()
-                .Where(x => x.IsDeleted == false)
+                .Where(x => x.IsDeleted == false && x.UserId == userId)
                 .ToList();
 
             foreach (var bookFromDb in booksFromDb) {
@@ -52,10 +52,10 @@ namespace ComitLibrary.Storage
             return results;
         }
 
-        public void Delete(Guid id) {
+        public void Delete(Guid id, Guid userId) {
             var bookFromDb = _context.Books
                 .AsNoTracking()
-                .First(x => x.BookId == id);
+                .First(x => x.BookId == id && x.UserId == userId);
             bookFromDb.IsDeleted = true;
             _context.Books.Update(bookFromDb);
             _context.SaveChanges();
@@ -68,6 +68,7 @@ namespace ComitLibrary.Storage
                 Title = bookFromDb.Title,
                 IsCheckedOut = bookFromDb.IsCheckedOut,
                 Year = bookFromDb.Year,
+                UserId = bookFromDb.UserId,
             };
         }
 
@@ -77,7 +78,8 @@ namespace ComitLibrary.Storage
                 Title = book.Title,
                 Author = book.Author,
                 IsCheckedOut = book.IsCheckedOut,
-                Year = book.Year
+                Year = book.Year,
+                UserId = book.UserId,
             };
         }
     }

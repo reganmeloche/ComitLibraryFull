@@ -27,22 +27,23 @@ namespace ComitLibrary.Storage
             _context.SaveChanges();
         }
 
-        public Loan GetByBookId(Guid bookId) {
+        public Loan GetByBookId(Guid bookId, Guid userId) {
             var loanDb = _context.Loans
                 .AsNoTracking()
                 .Include(x => x.Patron)
                 .Include(x => x.Book)
-                .First(x => x.BookId == bookId && x.IsReturned == false);
+                .First(x => x.BookId == bookId && x.IsReturned == false && x.UserId == userId);
             
             var loan = ConvertFromDb(loanDb);
             return loan;
         }
 
-        public List<Loan> GetAll() {
+        public List<Loan> GetAll(Guid userId) {
             return _context.Loans
                 .AsNoTracking()
                 .Include(x => x.Patron)
                 .Include(x => x.Book)
+                .Where(x => x.UserId == userId)
                 .Select(x => ConvertFromDb(x))
                 .ToList();
         }
@@ -53,6 +54,7 @@ namespace ComitLibrary.Storage
                 BookId = loan.Book.Id,
                 PatronId = loan.Patron.Id,
                 IsReturned = loan.IsReturned,
+                UserId = loan.UserId
                 //Book = BookStorageEF.ConvertToDb(loan.Book),
                 //Patron = PatronStorageEF.ConvertToDb(loan.Patron),
             };
@@ -63,7 +65,8 @@ namespace ComitLibrary.Storage
                 loanDb.LoanId, 
                 PatronStorageEF.ConvertFromDb(loanDb.Patron), 
                 BookStorageEF.ConvertFromDb(loanDb.Book), 
-                loanDb.IsReturned);
+                loanDb.IsReturned,
+                loanDb.UserId);
         }
     }
 }
